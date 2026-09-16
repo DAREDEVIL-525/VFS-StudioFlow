@@ -204,6 +204,96 @@ button{border:0;border-radius:12px;padding:11px 16px;color:white}.primary{backgr
   }
 }
 </style>
+<style>
+/* MOBILE MODAL RENDERING FIX v2 */
+@media (max-width: 600px) {
+  html, body {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .modal {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    min-height: 100vh !important;
+    padding: 10px !important;
+    overflow: hidden !important;
+  }
+
+  .modal-card,
+  .modal-card[style] {
+    display: block !important;
+    position: relative !important;
+    box-sizing: border-box !important;
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: calc(100dvh - 20px) !important;
+    margin: 0 !important;
+    padding: 18px 15px 16px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    flex: 0 1 auto !important;
+  }
+
+  .modal-card h2 {
+    display: block !important;
+    height: auto !important;
+    max-height: none !important;
+    font-size: 20px !important;
+    line-height: 1.25 !important;
+    margin: 0 34px 8px 0 !important;
+    white-space: normal !important;
+    overflow: visible !important;
+  }
+
+  .modal-card label {
+    display: block !important;
+    height: auto !important;
+    margin: 12px 0 !important;
+  }
+
+  .modal-card input,
+  .modal-card select,
+  .modal-card textarea {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 44px !important;
+  }
+
+  .modal-actions {
+    display: flex !important;
+    position: static !important;
+    width: 100% !important;
+    margin-top: 14px !important;
+    padding-top: 8px !important;
+    background: none !important;
+  }
+
+  .modal-actions button {
+    min-height: 44px !important;
+  }
+
+  .subitems-box {
+    height: auto !important;
+    max-height: none !important;
+  }
+
+  .close {
+    z-index: 5 !important;
+  }
+
+  #activityModal .modal-card {
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+    max-height: calc(100dvh - 20px) !important;
+  }
+}
+</style>
 </head>
 <body>
 <header><div><div class="brand">VARMA FASHION STUDIO</div><div class="sub">WORKFLOW</div></div><button id="logout" class="ghost hidden">Logout</button></header>
