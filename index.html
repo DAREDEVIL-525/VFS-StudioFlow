@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a0a0c">
+<title>Varma Fashion Studio — Workflow</title>
+<style>.subitems-box{margin:12px 0 16px;padding:14px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.035)}.subitems-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.small{font-size:12px}.small-btn{padding:8px 12px;font-size:12px;white-space:nowrap}.subitem-row{display:flex;gap:8px;margin-top:8px}.subitem-row input{flex:1}.remove-sub{width:38px;padding:0;border-radius:10px}
+/* MOBILE APP BACKGROUNDS */
+@media (max-width: 600px) {
+
+  /* Mobile Login */
+  body.login-scene::before {
+    background:
+      linear-gradient(rgba(0,0,0,.18), rgba(0,0,0,.35)),
+      url('images/mobile-login.png') center center / cover no-repeat !important;
+  }
+
+  /* Mobile Admin Home */
+  body.admin-scene::before {
+    background:
+      linear-gradient(rgba(0,0,0,.15), rgba(0,0,0,.30)),
+      url('images/mobile-home.png') center center / cover no-repeat !important;
+  }
+
+  /* Mobile Employee Home */
+  body.employee-scene::before {
+    background:
+      linear-gradient(rgba(0,0,0,.15), rgba(0,0,0,.30)),
+      url('images/mobile-home.png') center center / cover no-repeat !important;
+  }
+}
+
+/* DESKTOP APP BACKGROUNDS */
+@media (min-width: 601px) {
+  body.login-scene::before {
+    background:
+      linear-gradient(rgba(0,0,0,.18), rgba(0,0,0,.38)),
+      url('images/pc-login.png') center center / cover no-repeat !important;
+  }
+  body.admin-scene::before {
+    background:
+      linear-gradient(rgba(0,0,0,.15), rgba(0,0,0,.32)),
+      url('images/pc-home.png') center center / cover no-repeat !important;
+  }
+  body.employee-scene::before {
+    background:
+      linear-gradient(rgba(0,0,0,.15), rgba(0,0,0,.32)),
+      url('images/pc-home.png') center center / cover no-repeat !important;
+  }
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--bg:#08090b;--panel:rgba(18,19,23,.82);--panel2:rgba(24,25,30,.92);--line:rgba(255,255,255,.09);--text:#f4f4f5;--muted:#a1a1aa;--blue:#4f8cff;--green:#42c978;--danger:#ff6262;--shadow:0 24px 70px rgba(0,0,0,.45)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;background:#050608;color:var(--text);min-height:100vh;overflow-x:hidden}
+/* Cinematic photography-studio backgrounds — no external image required */
+body:before{content:"";position:fixed;inset:0;z-index:-3;background:
+radial-gradient(circle at 50% 46%,rgba(255,255,255,.075),transparent 13%),
+radial-gradient(circle at 18% 28%,rgba(79,140,255,.20),transparent 28%),
+radial-gradient(circle at 82% 70%,rgba(66,201,120,.10),transparent 25%),
+linear-gradient(112deg,#020306 0%,#0b0f18 44%,#050709 100%);}
+body:after{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background:
+radial-gradient(ellipse 28% 58% at 11% 50%,rgba(255,255,255,.045),transparent 70%),
+radial-gradient(ellipse 18% 42% at 91% 42%,rgba(255,255,255,.035),transparent 70%),
+linear-gradient(125deg,transparent 0 28%,rgba(255,255,255,.035) 28.3% 28.7%,transparent 29% 69%,rgba(255,255,255,.025) 69.3% 69.7%,transparent 70%),
+repeating-linear-gradient(0deg,rgba(255,255,255,.012) 0 1px,transparent 1px 5px);opacity:.9}
+body.login-scene:before{background:
+radial-gradient(circle at 50% 46%,rgba(255,255,255,.11),transparent 11%),
+radial-gradient(circle at 50% 46%,transparent 0 16%,rgba(255,255,255,.035) 16.2% 16.7%,transparent 17%),
+radial-gradient(circle at 16% 25%,rgba(66,105,160,.24),transparent 29%),
+linear-gradient(115deg,#020305,#0c1018 48%,#050607);}
+body.admin-scene:before{background:
+radial-gradient(circle at 77% 22%,rgba(79,140,255,.17),transparent 24%),
+radial-gradient(circle at 84% 23%,transparent 0 10%,rgba(255,255,255,.035) 10.2% 10.7%,transparent 11%),
+radial-gradient(circle at 15% 76%,rgba(66,201,120,.09),transparent 25%),
+linear-gradient(125deg,#030406,#0b0f16 52%,#050708);}
+body.employee-scene:before{background:
+radial-gradient(circle at 18% 24%,rgba(79,140,255,.18),transparent 28%),
+radial-gradient(circle at 84% 76%,rgba(66,201,120,.08),transparent 25%),
+radial-gradient(ellipse 45% 20% at 50% 105%,rgba(255,255,255,.07),transparent 70%),
+linear-gradient(120deg,#030507,#0a0e15 50%,#050708);}
+
+button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}.muted{color:var(--muted)}
+header{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:rgba(5,6,8,.55);backdrop-filter:blur(16px);position:sticky;top:0;z-index:20}.brand{font-weight:800;letter-spacing:.13em;font-size:14px}.sub{font-size:10px;letter-spacing:.28em;color:#777;margin-top:4px}
+main{max-width:1220px;margin:auto;padding:34px 22px 60px}.login{min-height:calc(100vh - 72px);display:grid;place-items:center;max-width:none;padding:28px;background:radial-gradient(circle at 50% 45%,rgba(255,255,255,.035),transparent 30%)}
+.card,.modal-card,.column,.stat,.staff-row{background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(18px)}.login-card{width:min(430px,100%);padding:38px;border-radius:24px}.login-card h1{font-size:30px;margin:0 0 8px}.login-card .muted{margin:0 0 28px}
+label{display:block;font-size:12px;color:#c8c8cc;margin:16px 0}input,select{width:100%;margin-top:8px;background:#0d0e11;color:var(--text);border:1px solid var(--line);border-radius:12px;padding:13px 14px;outline:none}input:focus,select:focus{border-color:rgba(79,140,255,.6);box-shadow:0 0 0 3px rgba(79,140,255,.1)}
+button{border:0;border-radius:12px;padding:11px 16px;color:white}.primary{background:#f2f2f2;color:#101114;font-weight:750}.secondary{background:#17191e;border:1px solid var(--line)}.ghost{background:transparent;border:1px solid var(--line)}.danger{background:rgba(255,98,98,.12);border:1px solid rgba(255,98,98,.25);color:#ff9b9b}.small{padding:8px 10px;font-size:12px}
+.login-btn{width:100%;margin-top:10px;padding:14px}.hint{font-size:11px;line-height:1.5;margin-top:18px}.error{color:#ff9696;font-size:12px;margin-top:12px;min-height:18px}
+.welcome{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:28px}.welcome h1{margin:0;font-size:30px}.welcome p{margin:7px 0 0}.top-actions{display:flex;gap:10px;flex-wrap:wrap}.top-actions select{width:auto;min-width:180px;margin-top:0;padding:11px 14px}.search-input{width:220px;margin-top:0;padding:11px 14px}.staff-add{margin-bottom:14px;display:flex;justify-content:flex-end}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}.stat{padding:18px;border-radius:16px}.stat span{display:block;color:var(--muted);font-size:12px}.stat b{display:block;font-size:28px;margin-top:6px}
+.workflow-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.column{border-radius:20px;padding:16px;min-height:340px}.column-head{display:flex;align-items:center;justify-content:space-between;padding:5px 4px 14px;border-bottom:1px solid var(--line);font-size:13px;font-weight:750}.column-head b{font-size:12px;color:var(--muted)}.working-head{color:#7eaeff}.completed-head{color:#62dd91}.work-list{display:grid;gap:10px;padding-top:12px}.work-card{background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:15px;padding:15px}.work-card h3{font-size:15px;margin:0 0 5px}.work-card .project{color:#cfcfd4;font-size:12px}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.pill{font-size:10px;padding:5px 8px;border-radius:999px;background:#14161a;border:1px solid var(--line);color:#b8bac1}.deadline{color:#f0c46b}.hdd{color:#7fdba1}.complete-btn{margin-top:12px;width:100%;background:rgba(66,201,120,.13);border:1px solid rgba(66,201,120,.25);color:#8ff0b0}.partial-btn{margin-top:8px;width:100%;background:rgba(79,140,255,.12);border:1px solid rgba(79,140,255,.24);color:#9fc0ff}.note-box{margin-top:12px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025)}.note-box .note-head{font-size:10px;color:#9fc0ff;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}.note-box p{margin:0;font-size:12px;line-height:1.45;color:#d4d4d8}.notes-list{display:grid;gap:8px;margin-top:12px}.note-item{padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.025);border:1px solid var(--line)}.note-item strong{font-size:11px}.note-item small{color:#777;margin-left:7px}.note-item p{margin:5px 0 0;font-size:12px;line-height:1.4;color:#d4d4d8}.empty{text-align:center;color:#777;padding:42px 12px;font-size:13px}
+.admin-table{margin-top:20px}.admin-table h2{font-size:17px}.staff-grid{display:grid;gap:9px}.staff-row{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:13px 15px;border-radius:13px}.staff-info strong{display:block}.staff-info span{font-size:11px;color:var(--muted)}.staff-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.status{font-size:10px;border-radius:999px;padding:5px 8px}.on{background:rgba(66,201,120,.12);color:#80e9a3}.off{background:rgba(255,255,255,.06);color:#999}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.68);backdrop-filter:blur(8px);display:grid;place-items:center;padding:18px;z-index:50}.modal-card{width:min(520px,100%);max-height:90vh;overflow:auto;border-radius:20px;padding:24px;position:relative}.close{position:absolute;right:14px;top:12px;background:transparent;color:#aaa;font-size:24px;padding:4px}.modal-card h2{margin:0 0 4px}.modal-card hr{border:0;border-top:1px solid var(--line);margin:22px 0}.modal-actions{display:flex;gap:9px;margin-top:20px}.modal-actions button{flex:1}.edit-btn{margin-top:8px;width:100%;background:rgba(255,255,255,.06);border:1px solid var(--line);color:#ddd}.delete-btn{margin-top:8px;width:100%;background:rgba(255,98,98,.10);border:1px solid rgba(255,98,98,.25);color:#ff9b9b}
+.toast{position:fixed;right:18px;bottom:18px;background:#17191e;border:1px solid var(--line);padding:12px 15px;border-radius:12px;box-shadow:var(--shadow);z-index:100;font-size:13px}.toast.bad{border-color:rgba(255,98,98,.35)}
+@media(max-width:760px){header{padding:0 16px}.brand{font-size:12px}.workflow-grid{grid-template-columns:1fr}.summary{grid-template-columns:1fr 1fr}.welcome{align-items:flex-start;flex-direction:column}.top-actions{width:100%}.top-actions button{flex:1}.staff-row{align-items:flex-start;flex-direction:column}.staff-actions{width:100%;justify-content:space-between}}
+</style>
+
+<link rel="preload" as="image" href="images/pc-login.png">
+<link rel="preload" as="image" href="images/mobile-login.png">
+<link rel="preload" as="image" href="images/pc-home.png">
+<link rel="preload" as="image" href="images/mobile-home.png">
+
+<style>
+/* FINAL BACKGROUND OVERRIDES */
+@media (min-width:601px){
+ body.login-scene:before{background:linear-gradient(rgba(0,0,0,.10),rgba(0,0,0,.30)),url("./images/pc-login.png") center center/cover no-repeat !important;}
+ body.admin-scene:before, body.employee-scene:before{background:linear-gradient(rgba(0,0,0,.10),rgba(0,0,0,.30)),url("./images/pc-home.png") center center/cover no-repeat !important;}
+}
+@media (max-width:600px){
+ body.login-scene:before{background:linear-gradient(rgba(0,0,0,.10),rgba(0,0,0,.30)),url("./images/mobile-login.png") center center/cover no-repeat !important;}
+ body.admin-scene:before, body.employee-scene:before{background:linear-gradient(rgba(0,0,0,.10),rgba(0,0,0,.30)),url("./images/mobile-home.png") center center/cover no-repeat !important;}
+}
+</style>
+</head>
+<body>
+<header><div><div class="brand">VARMA FASHION STUDIO</div><div class="sub">WORKFLOW</div></div><button id="logout" class="ghost hidden">Logout</button></header>
+<main id="loginView" class="login"><div class="card login-card"><h1>Studio Workflow</h1><p class="muted">Secure staff access</p><form id="loginForm"><label>Username<input id="username" autocomplete="username" placeholder="Enter username" required></label><label>Password<input id="password" type="password" autocomplete="current-password" placeholder="Enter password" required></label><button class="primary login-btn" type="submit">LOGIN</button><div id="loginError" class="error"></div></form></div></main>
+<main id="dashboardView" class="hidden"><section class="welcome"><div><h1 id="welcomeTitle"></h1><p id="welcomeSub" class="muted"></p></div><div class="top-actions"><div id="adminFilterWrap" class="hidden"><select id="adminStaffFilter" aria-label="Select employee"><option value="">ALL EMPLOYEES</option></select></div><input id="workSearch" class="search-input" placeholder="Search project, work, HDD..." aria-label="Search works"><button id="activityBtn" class="secondary">ACTIVITY HISTORY</button><button id="staffBtn" class="secondary hidden">STAFF MANAGEMENT</button><button id="newWorkBtn" class="primary">+ NEW WORK</button></div></section><section id="adminSummary" class="summary hidden"></section><section class="workflow-grid"><div class="column"><div class="column-head working-head"><span>🔵 WORKING</span><b id="workingCount">0</b></div><div id="workingList" class="work-list"></div></div><div class="column"><div class="column-head completed-head"><span>🟢 COMPLETED</span><b id="completedCount">0</b></div><div id="completedList" class="work-list"></div></div></section><section id="adminStaffSection" class="card admin-table hidden" style="padding:20px;border-radius:20px"><h2>Staff Overview</h2><div id="staffGrid" class="staff-grid"></div></section></main>
+<div id="workModal" class="modal hidden"><div class="modal-card"><button class="close" data-close="workModal">×</button><h2>Assign New Work</h2><label>Project Name<input id="projectName" placeholder="e.g. Bhasker Reddy Sir Wedding"></label><label>Work Name <span class="muted">(optional when using sub-items)</span><input id="workName" placeholder="e.g. Photo Editing"></label><div class="subitems-box"><div class="subitems-head"><div><b>SUB-ITEMS</b><div class="muted small">Optional — add multiple works under the same project</div></div><button type="button" id="addSubItem" class="secondary small-btn">+ ADD SUB-ITEM</button></div><div id="subItemsList"></div></div><label>Assign To<select id="assignTo"></select></label><div class="modal-actions"><button class="ghost" data-close="workModal">Cancel</button><button id="createWork" class="primary">ASSIGN WORK</button></div></div></div>
+<div id="editWorkModal" class="modal hidden"><div class="modal-card"><button class="close" data-close="editWorkModal">×</button><h2>Update Work</h2><p class="muted" id="editWorkTitle"></p><label>Project Name<input id="editProjectName" placeholder="Project name"></label><label>Work Name<input id="editWorkName" placeholder="Work name"></label><div class="modal-actions"><button class="ghost" data-close="editWorkModal">Cancel</button><button id="saveWorkEdit" class="primary">SAVE CHANGES</button></div></div></div>
+<div id="completeModal" class="modal hidden"><div class="modal-card"><button class="close" data-close="completeModal">×</button><h2>Complete Work</h2><p class="muted" id="completeWorkTitle"></p><label>HDD Name<input id="hddName" placeholder="Enter HDD name" required></label><div class="modal-actions"><button class="ghost" data-close="completeModal">Cancel</button><button id="confirmComplete" class="primary">MARK COMPLETED</button></div></div></div>
+<div id="partialModal" class="modal hidden"><div class="modal-card"><button class="close" data-close="partialModal">×</button><h2>Partially Complete</h2><p class="muted" id="partialWorkTitle"></p><label>Notes<textarea id="partialNote" rows="5" placeholder="What is completed and what is pending?"></textarea></label><label>HDD Name <span class="muted">(Optional)</span><input id="partialHddName" placeholder="Enter HDD name"></label><div class="modal-actions"><button class="ghost" data-close="partialModal">Cancel</button><button id="savePartial" class="primary">SAVE UPDATE</button></div></div></div>
+<div id="staffModal" class="modal hidden"><div class="modal-card"><button class="close" data-close="staffModal">×</button><h2>Staff Management</h2><p class="muted">Add staff, or activate/deactivate existing staff. Work history is retained.</p><div class="staff-add"><button id="addStaffBtn" class="primary">+ ADD NEW STAFF</button></div><div id="staffRows" class="staff-grid"></div></div></div>
+<div id="addStaffModal" class="modal hidden"><div class="modal-card"><button class="close" data-close="addStaffModal">×</button><h2>Add New Staff</h2><p class="muted">Create a secure login account for the new employee.</p><label>Employee Name<input id="newStaffName" placeholder="e.g. Suresh" required></label><label>Username<input id="newStaffUsername" placeholder="e.g. suresh" autocomplete="off" required></label><label>Password<input id="newStaffPassword" type="password" placeholder="Minimum 6 characters" autocomplete="new-password" required></label><div class="modal-actions"><button class="ghost" data-close="addStaffModal">Cancel</button><button id="createStaff" class="primary">CREATE STAFF</button></div><div id="staffCreateError" class="error"></div><p class="hint">The password is handled by Supabase Authentication; it is not stored in the staff profile.</p></div></div>
+<div id="activityModal" class="modal hidden"><div class="modal-card" style="width:min(760px,100%)"><button class="close" data-close="activityModal">×</button><h2>Activity / Update History</h2><p class="muted">Recent work and staff activity.</p><label>Search History<input id="activitySearch" placeholder="Search employee, work, action, HDD, notes..."></label><div id="activityList" class="notes-list"></div></div></div>\n<div id="toast" class="toast hidden"></div>
+<script>
+const SUPABASE_URL='https://drdsqxbvabqfoveleasn.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_jixjV2eRWD5PJTyApomjww_ONNIprSZ';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+// Separate auth client prevents creating a new staff account from replacing the admin session.
+const authAdminClient=supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
+let me=null, works=[], profiles=[], notes=[], activities=[], selectedWork=null;
+const $=id=>document.getElementById(id);
+const show=(id,on=true)=>$(id).classList.toggle('hidden',!on);
+function toast(msg,bad=false){const t=$('toast');t.textContent=msg;t.className='toast'+(bad?' bad':'');setTimeout(()=>show('toast',false),2800)}
+function internalEmail(username){const u=username.trim().toLowerCase(); return u==='bharath'?'bharathkalyan2000@gmail.com':u+'@varmafashionstudio.local'}
+async function loadMe(){const {data:{user}}=await sb.auth.getUser();if(!user){document.body.className='login-scene';show('loginView',true);show('dashboardView',false);show('logout',false);return false}const {data,error}=await sb.from('profiles').select('*').eq('id',user.id).single();if(error||!data||!data.active){await sb.auth.signOut();$('loginError').textContent='This account is inactive or not configured.';document.body.className='login-scene';show('loginView',true);show('dashboardView',false);return false}me=data;document.body.className=me.role==='admin'?'admin-scene':'employee-scene';show('loginView',false);show('dashboardView',true);show('logout',true);return true}
+async function loadProfiles(){if(me.role!=='admin')return;const {data,error}=await sb.from('profiles').select('*').order('name');if(error){toast(error.message,true);return}profiles=data||[];renderStaff();populateAssignees()}
+async function loadWorks(){let q=sb.from('works').select('id,project_name,work_name,assigned_to,status,completion_type,hdd_name,completed_at,created_at').order('created_at',{ascending:false});if(me.role!=='admin')q=q.eq('assigned_to',me.id);else {const selected=$('adminStaffFilter')?.value||''; if(selected) q=q.eq('assigned_to',selected);}const {data,error}=await q;if(error){toast(error.message,true);return}works=data||[];await loadNotes();renderWorks()}
+async function loadNotes(){let q=sb.from('work_notes').select('id,work_id,author_id,note,created_at').order('created_at',{ascending:false});if(me.role!=='admin'){const ids=works.map(w=>w.id);if(!ids.length){notes=[];return}q=q.in('work_id',ids)}const {data,error}=await q;if(error){if((error.message||'').includes('work_notes')){notes=[];return}toast(error.message,true);return}notes=data||[]}
+function staffName(id){return profiles.find(p=>p.id===id)?.name||'Unknown'}
+function activityText(a){
+  const who=a.actor_name||'System';
+  const target=a.work_name?(a.project_name+' — '+a.work_name):(a.target_name||'');
+  const action=(a.action||'').replaceAll('_',' ');
+  let detail='';
+  if(a.details){
+    const d=a.details;
+    if(d.note) detail=' · '+d.note;
+    else if(d.hdd_name) detail=' · HDD: '+d.hdd_name;
+    else if(d.from_status||d.to_status) detail=' · '+(d.from_status||'')+' → '+(d.to_status||'');
+    else if(d.username) detail=' · @'+d.username;
+  }
+  return who+' · '+action+(target?' · '+target:'')+detail;
+}
+async function loadActivities(){
+  if(!me){activities=[];return}
+  let q=sb.from('activity_logs').select('*').order('created_at',{ascending:false}).limit(200);
+  if(me.role!=='admin') q=q.eq('actor_id',me.id);
+  const {data,error}=await q;
+  if(error){activities=[];return}
+  activities=data||[];
+}
+function renderActivities(){
+  const box=$('activityList'); if(!box)return;
+  const s=($('activitySearch')?.value||'').trim().toLowerCase();
+  const arr=activities.filter(a=>!s || activityText(a).toLowerCase().includes(s));
+  box.innerHTML='';
+  if(!arr.length){box.innerHTML='<div class="empty">No activity found</div>';return}
+  arr.forEach(a=>{
+    const item=document.createElement('div'); item.className='note-item';
+    item.innerHTML='<strong></strong><small></small><p></p>';
+    item.querySelector('strong').textContent=(a.action||'ACTIVITY').replaceAll('_',' ');
+    item.querySelector('small').textContent=new Date(a.created_at).toLocaleString('en-IN');
+    item.querySelector('p').textContent=activityText(a);
+    box.append(item);
+  });
+}
+function openActivity(){
+  show('activityModal',true);
+  $('activitySearch').value='';
+  renderActivities();
+}
+function card(w){
+  const el=document.createElement('div');
+  el.className='work-card';
+  el.innerHTML='<h3></h3><div class="project"></div><div class="meta"></div>';
+  el.querySelector('h3').textContent=w.work_name;
+  el.querySelector('.project').textContent=w.project_name;
+  const m=el.querySelector('.meta');
+  const a=document.createElement('span');a.className='pill';a.textContent=me.role==='admin'?'Assigned: '+staffName(w.assigned_to):'Assigned to you';m.append(a);
+  const wn=notes.filter(n=>n.work_id===w.id);
+  if(wn.length){
+    const latest=document.createElement('div');latest.className='note-box';latest.innerHTML='<div class="note-head">Latest progress update</div><p></p>';latest.querySelector('p').textContent=wn[0].note;el.append(latest);
+    if(wn.length>1){const all=document.createElement('div');all.className='notes-list';wn.slice(1,4).forEach(n=>{const item=document.createElement('div');item.className='note-item';const who=me.role==='admin'?staffName(n.author_id):'You';item.innerHTML='<strong></strong><small></small><p></p>';item.querySelector('strong').textContent=who;item.querySelector('small').textContent=new Date(n.created_at).toLocaleString('en-IN');item.querySelector('p').textContent=n.note;all.append(item)});el.append(all)}
+  }
+  if(w.status==='completed'){
+    const type=document.createElement('span');type.className='pill';type.textContent=w.completion_type==='partial'?'PARTIALLY COMPLETED':'COMPLETED';m.append(type);
+    const h=document.createElement('span');h.className='pill hdd';h.textContent='HDD: '+(w.hdd_name||'-');m.append(h)
+    const c=document.createElement('span');c.className='pill';c.textContent='Completed: '+new Date(w.completed_at).toLocaleString('en-IN');m.append(c);
+    if(me.role==='admin'){
+      const e=document.createElement('button');e.className='edit-btn';e.textContent='EDIT WORK';e.onclick=()=>openEdit(w);el.append(e);
+    }else if(me.role==='staff' && w.completion_type==='partial'){
+      const b=document.createElement('button');b.className='complete-btn';b.textContent='COMPLETE WORK';b.onclick=()=>openComplete(w);el.append(b);
+    }
+  }else{
+    if(me.role==='staff'){
+      const e=document.createElement('button');e.className='edit-btn';e.textContent='EDIT WORK';e.onclick=()=>openEdit(w);el.append(e);
+      const p=document.createElement('button');p.className='partial-btn';p.textContent='PARTIALLY COMPLETE';p.onclick=()=>openPartial(w);el.append(p);
+      const b=document.createElement('button');b.className='complete-btn';b.textContent='COMPLETE WORK';b.onclick=()=>openComplete(w);el.append(b);
+    }
+  }
+  if(me.role==='admin'){
+    const d=document.createElement('button');d.className='delete-btn';d.textContent='DELETE WORK';d.onclick=()=>deleteWork(w);el.append(d);
+  }
+  return el;
+}
+function renderWorks(){const wl=$('workingList'),cl=$('completedList');wl.innerHTML='';cl.innerHTML='';const s=($('workSearch')?.value||'').trim().toLowerCase();const visible=works.filter(w=>{if(!s)return true;const hay=[w.project_name,w.work_name,w.hdd_name,me?.role==='admin'?staffName(w.assigned_to):''].join(' ').toLowerCase();return hay.includes(s)});const working=visible.filter(w=>w.status==='working'),completed=visible.filter(w=>w.status==='completed');$('workingCount').textContent=working.length;$('completedCount').textContent=completed.length;if(!working.length)wl.innerHTML='<div class="empty">'+(s?'No matching working items':'No working items')+'</div>';if(!completed.length)cl.innerHTML='<div class="empty">'+(s?'No matching completed items':'No completed items')+'</div>';working.forEach(w=>wl.append(card(w)));completed.forEach(w=>cl.append(card(w)));if(me.role==='admin')renderSummary()}
+function renderSummary(){const total=works.length,working=works.filter(w=>w.status==='working').length,completed=works.filter(w=>w.status==='completed').length,active=profiles.filter(p=>p.active).length;$('adminSummary').innerHTML=[['TOTAL WORKS',total],['WORKING',working],['COMPLETED',completed],['ACTIVE STAFF',active]].map(x=>'<div class="stat"><span>'+x[0]+'</span><b>'+x[1]+'</b></div>').join('');show('adminSummary',true)}
+function renderStaff(){if(me.role!=='admin')return;const html=profiles.map(p=>'<div class="staff-row"><div class="staff-info"><strong>'+esc(p.name)+'</strong><span>@'+esc(p.username)+' · '+esc(p.role)+'</span></div><div class="staff-actions"><span class="status '+(p.active?'on':'off')+'">'+(p.active?'ACTIVE':'INACTIVE')+'</span><button class="small '+(p.active?'danger':'secondary')+'" data-id="'+p.id+'">'+(p.active?'SET INACTIVE':'SET ACTIVE')+'</button>'+(p.id!==me.id?'<button class="small danger" data-delete-staff="'+p.id+'">DELETE STAFF</button>':'')+'</div></div>').join('');$('staffGrid').innerHTML=html;$('staffRows').innerHTML=html;document.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>toggleActive(b.dataset.id));document.querySelectorAll('[data-delete-staff]').forEach(b=>b.onclick=()=>deleteStaff(b.dataset.deleteStaff))}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function populateAssignees(){$('assignTo').innerHTML=profiles.filter(p=>p.active).map(p=>'<option value="'+p.id+'">'+esc(p.name)+'</option>').join('');if(me?.role==='admin'){const f=$('adminStaffFilter');if(f){const current=f.value;f.innerHTML='<option value="">ALL EMPLOYEES</option>'+profiles.filter(p=>p.active).map(p=>'<option value="'+p.id+'">'+esc(p.name)+'</option>').join('');f.value=current||'';}}}
+
+async function createStaff(){
+  if(me?.role!=='admin')return;
+  const name=$('newStaffName').value.trim();
+  const username=$('newStaffUsername').value.trim().toLowerCase();
+  const password=$('newStaffPassword').value;
+  $('staffCreateError').textContent='';
+  if(!name||!username||!password){$('staffCreateError').textContent='Please fill all fields.';return}
+  if(!/^[a-z0-9._-]+$/.test(username)){ $('staffCreateError').textContent='Username can use only letters, numbers, dot, underscore or hyphen.'; return }
+  if(password.length<6){$('staffCreateError').textContent='Password must be at least 6 characters.';return}
+  if(profiles.some(p=>p.username.toLowerCase()===username)){ $('staffCreateError').textContent='That username already exists.'; return }
+  const email=internalEmail(username);
+  const {data,error}=await authAdminClient.auth.signUp({email,password,options:{data:{display_name:name}}});
+  if(error){$('staffCreateError').textContent=error.message||'Could not create login account.';return}
+  if(!data.user){
+    $('staffCreateError').textContent='Staff account was not returned. In Supabase, turn OFF Email Confirmation for this internal staff login system, then try again.';
+    return;
+  }
+  const {error:profileError}=await sb.from('profiles').insert({id:data.user.id,name,username,role:'staff',active:true});
+  if(profileError){$('staffCreateError').textContent='Login account created, but profile setup failed: '+profileError.message;return}
+  show('addStaffModal',false);toast(name+' added successfully');await loadProfiles();await loadWorks();
+}
+
+async function toggleActive(id){if(id===me.id){toast('You cannot deactivate your own admin account.',true);return}const p=profiles.find(x=>x.id===id);if(!p)return;const {error}=await sb.from('profiles').update({active:!p.active}).eq('id',id);if(error){toast(error.message,true);return}toast(p.name+' is now '+(!p.active?'active':'inactive'));await loadProfiles();await loadWorks()}
+async function deleteStaff(id){
+  if(me?.role!=='admin'||id===me.id)return;
+  const p=profiles.find(x=>x.id===id); if(!p)return;
+  if(!confirm('Delete '+p.name+'? This removes the staff profile and cannot be undone. For preserving work history, SET INACTIVE is safer.'))return;
+  const {error}=await sb.from('profiles').delete().eq('id',id);
+  if(error){toast(error.message,true);return}
+  toast(p.name+' profile deleted');await loadProfiles();await loadWorks();
+}
+function openEdit(w){
+  selectedWork=w;
+  $('editWorkTitle').textContent=w.project_name+' — '+w.work_name;
+  $('editProjectName').value=w.project_name||'';
+  $('editWorkName').value=w.work_name||'';
+  show('editWorkModal',true);
+  setTimeout(()=>$('editProjectName').focus(),50);
+}
+async function saveWorkEdit(){
+  if(!selectedWork||!me)return;
+  const project=$('editProjectName').value.trim(), name=$('editWorkName').value.trim();
+  if(!project||!name){toast('Please fill Project and Work.',true);return}
+  let q=sb.from('works').update({project_name:project,work_name:name}).eq('id',selectedWork.id);
+  if(me.role==='staff') q=q.eq('assigned_to',me.id).eq('status','working');
+  else if(me.role!=='admin') return;
+  const {error}=await q;
+  if(error){toast(error.message,true);return}
+  show('editWorkModal',false);selectedWork=null;toast('Work updated successfully');await loadWorks();
+}
+
+async function deleteWork(w){
+  if(me?.role!=='admin')return;
+  if(!confirm('Delete this work? This cannot be undone.'))return;
+  const {error}=await sb.from('works').delete().eq('id',w.id);
+  if(error){toast(error.message,true);return}
+  toast('Work deleted');await loadWorks();
+}
+function resetSubItems(){ $('subItemsList').innerHTML=''; }
+function addSubItem(value=''){ const row=document.createElement('div'); row.className='subitem-row'; row.innerHTML='<input class="subitem-input" placeholder="e.g. Bride Haldi"><button type="button" class="ghost remove-sub">×</button>'; row.querySelector('.subitem-input').value=value; row.querySelector('.remove-sub').onclick=()=>row.remove(); $('subItemsList').appendChild(row); row.querySelector('.subitem-input').focus(); }
+async function createWork(){const project=$('projectName').value.trim(),name=$('workName').value.trim();const subitems=[...document.querySelectorAll('.subitem-input')].map(x=>x.value.trim()).filter(Boolean);const assigned=me.role==='admin'?$('assignTo').value:me.id;if(!project||(!name&&!subitems.length)||!assigned){toast('Please enter Project and at least one Work/Sub-item.',true);return}const names=[];if(name)names.push(name);names.push(...subitems);const rows=names.map(n=>({project_name:project,work_name:n,assigned_to:assigned,status:'working'}));const {error}=await sb.from('works').insert(rows);if(error){toast(error.message,true);return}$('projectName').value='';$('workName').value='';resetSubItems();show('workModal',false);toast(names.length>1?names.length+' works assigned successfully':'Work assigned successfully');await loadWorks()}
+function openComplete(w){selectedWork=w;$('completeWorkTitle').textContent=w.project_name+' — '+w.work_name;$('hddName').value='';show('completeModal',true);setTimeout(()=>$('hddName').focus(),50)}
+function openPartial(w){selectedWork=w;$('partialWorkTitle').textContent=w.project_name+' — '+w.work_name;$('partialNote').value='';$('partialHddName').value='';show('partialModal',true);setTimeout(()=>$('partialNote').focus(),50)}
+async function savePartial(){if(!selectedWork)return;const note=$('partialNote').value.trim();const hdd=$('partialHddName').value.trim();if(!note){toast('Enter a progress note.',true);return}const {error}=await sb.rpc('partial_complete_work',{p_work_id:selectedWork.id,p_note:note,p_hdd_name:hdd||null});if(error){toast(error.message,true);return}show('partialModal',false);selectedWork=null;toast(hdd?'Work marked as partially completed and HDD saved':'Work marked as partially completed');await loadWorks()}
+async function confirmComplete(){if(!selectedWork)return;const hdd=$('hddName').value.trim();if(!hdd){toast('Enter HDD name.',true);return}const {error}=await sb.rpc('complete_work',{p_work_id:selectedWork.id,p_hdd_name:hdd});if(error){toast(error.message,true);return}show('completeModal',false);selectedWork=null;toast('Work completed and HDD saved');await loadWorks()}
+$('loginForm').onsubmit=async e=>{e.preventDefault();$('loginError').textContent='';const username=$('username').value.trim().toLowerCase(),password=$('password').value;if(!username||!password)return;const {error}=await sb.auth.signInWithPassword({email:internalEmail(username),password});if(error){$('loginError').textContent='Invalid username or password.';return}if(await loadMe()){await loadProfiles();await loadWorks();await loadActivities();$('welcomeTitle').textContent='Welcome, '+me.name;$('welcomeSub').textContent=me.role==='admin'?'Admin Dashboard · All studio work':'Your assigned studio work';show('staffBtn',me.role==='admin');show('newWorkBtn',true);show('adminStaffSection',me.role==='admin');show('adminFilterWrap',me.role==='admin')}};
+$('logout').onclick=async()=>{await sb.auth.signOut();me=null;works=[];profiles=[];show('loginView',true);show('dashboardView',false);show('logout',false);$('password').value=''};
+$('newWorkBtn').onclick=()=>{populateAssignees();$('projectName').value='';$('workName').value='';resetSubItems();$('assignTo').closest('label').classList.toggle('hidden',me.role!=='admin');show('workModal',true)};$('adminStaffFilter').onchange=async()=>{await loadWorks()};$('staffBtn').onclick=()=>show('staffModal',true);$('addStaffBtn').onclick=()=>{show('staffCreateError',false);$('newStaffName').value='';$('newStaffUsername').value='';$('newStaffPassword').value='';show('addStaffModal',true);setTimeout(()=>$('newStaffName').focus(),50)};$('createStaff').onclick=createStaff;$('createWork').onclick=createWork;$('addSubItem').onclick=()=>addSubItem();$('saveWorkEdit').onclick=saveWorkEdit;$('confirmComplete').onclick=confirmComplete;$('savePartial').onclick=savePartial;$('workSearch').oninput=()=>renderWorks();$('activityBtn').onclick=openActivity;$('activitySearch').oninput=renderActivities;
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>show(b.dataset.close,false));
+sb.auth.onAuthStateChange(async(_event,session)=>{if(session&&!me){if(await loadMe()){await loadProfiles();await loadWorks();$('welcomeTitle').textContent='Welcome, '+me.name;$('welcomeSub').textContent=me.role==='admin'?'Admin Dashboard · All studio work':'Your assigned studio work';show('staffBtn',me.role==='admin');show('newWorkBtn',true);show('adminStaffSection',me.role==='admin');show('adminFilterWrap',me.role==='admin')}}});
+let realtimeChannel=null;
+function startRealtime(){
+  if(realtimeChannel) sb.removeChannel(realtimeChannel);
+  realtimeChannel=sb.channel('varma-workflow-live')
+    .on('postgres_changes',{event:'*',schema:'public',table:'works'},async()=>{await loadWorks();})
+    .on('postgres_changes',{event:'*',schema:'public',table:'profiles'},async()=>{if(me?.role==='admin'){await loadProfiles();await loadWorks();}})
+    .on('postgres_changes',{event:'*',schema:'public',table:'work_notes'},async()=>{if(me){await loadWorks();await loadActivities();renderActivities();}})
+    .on('postgres_changes',{event:'*',schema:'public',table:'activity_logs'},async()=>{if(me){await loadActivities();renderActivities();}})
+    .subscribe();
+}
+(async()=>{if(await loadMe()){await loadProfiles();await loadWorks();await loadActivities();startRealtime();$('welcomeTitle').textContent='Welcome, '+me.name;$('welcomeSub').textContent=me.role==='admin'?'Admin Dashboard · All studio work':'Your assigned studio work';show('staffBtn',me.role==='admin');show('newWorkBtn',true);show('adminStaffSection',me.role==='admin');show('adminFilterWrap',me.role==='admin')}})();
+</script>
+</body></html>
