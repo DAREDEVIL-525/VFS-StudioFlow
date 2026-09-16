@@ -112,6 +112,98 @@ button{border:0;border-radius:12px;padding:11px 16px;color:white}.primary{backgr
  body.admin-scene:before, body.employee-scene:before{background:linear-gradient(rgba(0,0,0,.10),rgba(0,0,0,.30)),url("./images/mobile-home.png") center center/cover no-repeat !important;}
 }
 </style>
+<style>
+/* MOBILE MODAL FIX */
+@media (max-width: 600px) {
+  .modal {
+    padding: 10px;
+    place-items: center;
+    overflow-y: auto;
+  }
+
+  .modal-card,
+  .modal-card[style] {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 88vh;
+    padding: 18px 15px;
+    border-radius: 16px;
+    overflow-y: auto;
+  }
+
+  .modal-card h2 {
+    font-size: 20px;
+    line-height: 1.25;
+    margin: 0 32px 6px 0;
+    word-break: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .modal-card > .muted,
+  .modal-card > p.muted {
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .modal-card label {
+    font-size: 11px;
+    margin: 12px 0;
+  }
+
+  .modal-card input,
+  .modal-card select,
+  .modal-card textarea {
+    font-size: 14px;
+    padding: 11px 12px;
+  }
+
+  .modal-actions {
+    position: sticky;
+    bottom: -1px;
+    padding-top: 10px;
+    margin-top: 14px;
+    background: linear-gradient(to bottom, transparent, rgba(18,19,23,.98) 18%);
+  }
+
+  .modal-actions button {
+    min-height: 44px;
+    font-size: 12px;
+  }
+
+  .close {
+    right: 8px;
+    top: 7px;
+    font-size: 23px;
+  }
+
+  .subitems-box {
+    padding: 11px;
+    margin: 10px 0 12px;
+  }
+
+  .subitems-head {
+    align-items: flex-start;
+  }
+
+  .subitem-row {
+    gap: 6px;
+  }
+
+  .remove-sub {
+    width: 40px;
+    min-width: 40px;
+  }
+
+  #activityModal .modal-card {
+    max-height: 90vh;
+  }
+
+  #activityList {
+    max-height: 55vh;
+    overflow-y: auto;
+  }
+}
+</style>
 </head>
 <body>
 <header><div><div class="brand">VARMA FASHION STUDIO</div><div class="sub">WORKFLOW</div></div><button id="logout" class="ghost hidden">Logout</button></header>
