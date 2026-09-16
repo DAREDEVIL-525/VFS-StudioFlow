@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.varmafashionstudio.myapplication",
+      "sha256_cert_fingerprints": [
+        "1D:D5:80:C9:BD:95:64:8F:CE:81:0E:B5:25:4D:58:55:92:D1:7F:00:5E:8A:DA:B0:50:F0:E7:36:71:4A:34:58"
+      ]
+    }
+  }
+]
