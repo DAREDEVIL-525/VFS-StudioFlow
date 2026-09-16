@@ -50,29 +50,7 @@
   }
 }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-/* MOBILE TOUCH SAFETY: ensure primary dashboard buttons invoke their actions */
-(function(){
-  function dashboardAction(target){
-    const b=target.closest('button');
-    if(!b || !document.getElementById('dashboardView') || document.getElementById('dashboardView').classList.contains('hidden')) return;
-    if(b.id==='newWorkBtn'){
-      populateAssignees();
-      $('projectName').value='';
-      $('workName').value='';
-      resetSubItems();
-      $('assignTo').closest('label').classList.toggle('hidden',me?.role!=='admin');
-      show('workModal',true);
-    }else if(b.id==='activityBtn'){
-      openActivity();
-    }else if(b.id==='staffBtn' && me?.role==='admin'){
-      show('staffModal',true);
-    }
-  }
-  document.addEventListener('click',e=>dashboardAction(e.target),true);
-})();
-
-</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--bg:#08090b;--panel:rgba(18,19,23,.82);--panel2:rgba(24,25,30,.92);--line:rgba(255,255,255,.09);--text:#f4f4f5;--muted:#a1a1aa;--blue:#4f8cff;--green:#42c978;--danger:#ff6262;--shadow:0 24px 70px rgba(0,0,0,.45)}
 *{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;background:#050608;color:var(--text);min-height:100vh;overflow-x:hidden}
@@ -133,197 +111,6 @@ button{border:0;border-radius:12px;padding:11px 16px;color:white}.primary{backgr
  body.login-scene:before{background:linear-gradient(rgba(0,0,0,.10),rgba(0,0,0,.30)),url("./images/mobile-login.png") center center/cover no-repeat !important;}
  body.admin-scene:before, body.employee-scene:before{background:linear-gradient(rgba(0,0,0,.10),rgba(0,0,0,.30)),url("./images/mobile-home.png") center center/cover no-repeat !important;}
 }
-</style>
-<style>
-/* MOBILE MODAL FIX */
-@media (max-width: 600px) {
-  .modal {
-    padding: 10px;
-    place-items: center;
-    overflow-y: auto;
-  }
-
-  .modal-card,
-  .modal-card[style] {
-    width: 100% !important;
-    max-width: 100% !important;
-    max-height: 88vh;
-    padding: 18px 15px;
-    border-radius: 16px;
-    overflow-y: auto;
-  }
-
-  .modal-card h2 {
-    font-size: 20px;
-    line-height: 1.25;
-    margin: 0 32px 6px 0;
-    word-break: normal;
-    overflow-wrap: anywhere;
-  }
-
-  .modal-card > .muted,
-  .modal-card > p.muted {
-    font-size: 12px;
-    line-height: 1.4;
-  }
-
-  .modal-card label {
-    font-size: 11px;
-    margin: 12px 0;
-  }
-
-  .modal-card input,
-  .modal-card select,
-  .modal-card textarea {
-    font-size: 14px;
-    padding: 11px 12px;
-  }
-
-  .modal-actions {
-    position: sticky;
-    bottom: -1px;
-    padding-top: 10px;
-    margin-top: 14px;
-    background: linear-gradient(to bottom, transparent, rgba(18,19,23,.98) 18%);
-  }
-
-  .modal-actions button {
-    min-height: 44px;
-    font-size: 12px;
-  }
-
-  .close {
-    right: 8px;
-    top: 7px;
-    font-size: 23px;
-  }
-
-  .subitems-box {
-    padding: 11px;
-    margin: 10px 0 12px;
-  }
-
-  .subitems-head {
-    align-items: flex-start;
-  }
-
-  .subitem-row {
-    gap: 6px;
-  }
-
-  .remove-sub {
-    width: 40px;
-    min-width: 40px;
-  }
-
-  #activityModal .modal-card {
-    max-height: 90vh;
-  }
-
-  #activityList {
-    max-height: 55vh;
-    overflow-y: auto;
-  }
-}
-</style>
-<style>
-/* MOBILE MODAL RENDERING FIX v2 */
-@media (max-width: 600px) {
-  html, body {
-    width: 100%;
-    min-width: 0;
-  }
-
-  .modal {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 100vw !important;
-    height: 100dvh !important;
-    min-height: 100vh !important;
-    padding: 10px !important;
-    overflow: hidden !important;
-  }
-
-  .modal-card,
-  .modal-card[style] {
-    display: block !important;
-    position: relative !important;
-    box-sizing: border-box !important;
-    width: calc(100vw - 20px) !important;
-    max-width: calc(100vw - 20px) !important;
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: calc(100dvh - 20px) !important;
-    margin: 0 !important;
-    padding: 18px 15px 16px !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-    flex: 0 1 auto !important;
-  }
-
-  .modal-card h2 {
-    display: block !important;
-    height: auto !important;
-    max-height: none !important;
-    font-size: 20px !important;
-    line-height: 1.25 !important;
-    margin: 0 34px 8px 0 !important;
-    white-space: normal !important;
-    overflow: visible !important;
-  }
-
-  .modal-card label {
-    display: block !important;
-    height: auto !important;
-    margin: 12px 0 !important;
-  }
-
-  .modal-card input,
-  .modal-card select,
-  .modal-card textarea {
-    width: 100% !important;
-    height: auto !important;
-    min-height: 44px !important;
-  }
-
-  .modal-actions {
-    display: flex !important;
-    position: static !important;
-    width: 100% !important;
-    margin-top: 14px !important;
-    padding-top: 8px !important;
-    background: none !important;
-  }
-
-  .modal-actions button {
-    min-height: 44px !important;
-  }
-
-  .subitems-box {
-    height: auto !important;
-    max-height: none !important;
-  }
-
-  .close {
-    z-index: 5 !important;
-  }
-
-  #activityModal .modal-card {
-    width: calc(100vw - 20px) !important;
-    max-width: calc(100vw - 20px) !important;
-    max-height: calc(100dvh - 20px) !important;
-  }
-}
-</style>
-<style>
-/* TOUCH / CLICK LAYER FIX */
-body::before, body::after { pointer-events:none !important; }
-header, main, .modal, .card, .column, button, input, select, textarea {
-  position: relative;
-}
-header, main, .modal { z-index: 1; }
-button, input, select, textarea { pointer-events:auto !important; touch-action:manipulation; }
 </style>
 </head>
 <body>
@@ -500,6 +287,49 @@ function openComplete(w){selectedWork=w;$('completeWorkTitle').textContent=w.pro
 function openPartial(w){selectedWork=w;$('partialWorkTitle').textContent=w.project_name+' — '+w.work_name;$('partialNote').value='';$('partialHddName').value='';show('partialModal',true);setTimeout(()=>$('partialNote').focus(),50)}
 async function savePartial(){if(!selectedWork)return;const note=$('partialNote').value.trim();const hdd=$('partialHddName').value.trim();if(!note){toast('Enter a progress note.',true);return}const {error}=await sb.rpc('partial_complete_work',{p_work_id:selectedWork.id,p_note:note,p_hdd_name:hdd||null});if(error){toast(error.message,true);return}show('partialModal',false);selectedWork=null;toast(hdd?'Work marked as partially completed and HDD saved':'Work marked as partially completed');await loadWorks()}
 async function confirmComplete(){if(!selectedWork)return;const hdd=$('hddName').value.trim();if(!hdd){toast('Enter HDD name.',true);return}const {error}=await sb.rpc('complete_work',{p_work_id:selectedWork.id,p_hdd_name:hdd});if(error){toast(error.message,true);return}show('completeModal',false);selectedWork=null;toast('Work completed and HDD saved');await loadWorks()}
+
+/* MOBILE BROWSER BUTTON FIX */
+function bindMobileButtons(){
+  const newBtn=$('newWorkBtn');
+  const activityBtn=$('activityBtn');
+  const staffBtn=$('staffBtn');
+
+  if(newBtn){
+    const openNewWork=()=>{
+      try{
+        populateAssignees();
+        $('projectName').value='';
+        $('workName').value='';
+        resetSubItems();
+        const label=$('assignTo')?.closest('label');
+        if(label) label.classList.toggle('hidden',me?.role!=='admin');
+        show('workModal',true);
+      }catch(err){console.error('NEW WORK:',err);toast('Could not open New Work',true);}
+    };
+    newBtn.onclick=openNewWork;
+    newBtn.addEventListener('pointerup',openNewWork,{passive:true});
+  }
+
+  if(activityBtn){
+    const openHistory=()=>{
+      try{openActivity();}
+      catch(err){console.error('ACTIVITY:',err);toast('Could not open Activity History',true);}
+    };
+    activityBtn.onclick=openHistory;
+    activityBtn.addEventListener('pointerup',openHistory,{passive:true});
+  }
+
+  if(staffBtn){
+    const openStaff=()=>{
+      try{show('staffModal',true);}
+      catch(err){console.error('STAFF:',err);toast('Could not open Staff Management',true);}
+    };
+    staffBtn.onclick=openStaff;
+    staffBtn.addEventListener('pointerup',openStaff,{passive:true});
+  }
+}
+bindMobileButtons();
+
 $('loginForm').onsubmit=async e=>{e.preventDefault();$('loginError').textContent='';const username=$('username').value.trim().toLowerCase(),password=$('password').value;if(!username||!password)return;const {error}=await sb.auth.signInWithPassword({email:internalEmail(username),password});if(error){$('loginError').textContent='Invalid username or password.';return}if(await loadMe()){await loadProfiles();await loadWorks();await loadActivities();$('welcomeTitle').textContent='Welcome, '+me.name;$('welcomeSub').textContent=me.role==='admin'?'Admin Dashboard · All studio work':'Your assigned studio work';show('staffBtn',me.role==='admin');show('newWorkBtn',true);show('adminStaffSection',me.role==='admin');show('adminFilterWrap',me.role==='admin')}};
 $('logout').onclick=async()=>{await sb.auth.signOut();me=null;works=[];profiles=[];show('loginView',true);show('dashboardView',false);show('logout',false);$('password').value=''};
 $('newWorkBtn').onclick=()=>{populateAssignees();$('projectName').value='';$('workName').value='';resetSubItems();$('assignTo').closest('label').classList.toggle('hidden',me.role!=='admin');show('workModal',true)};$('adminStaffFilter').onchange=async()=>{await loadWorks()};$('staffBtn').onclick=()=>show('staffModal',true);$('addStaffBtn').onclick=()=>{show('staffCreateError',false);$('newStaffName').value='';$('newStaffUsername').value='';$('newStaffPassword').value='';show('addStaffModal',true);setTimeout(()=>$('newStaffName').focus(),50)};$('createStaff').onclick=createStaff;$('createWork').onclick=createWork;$('addSubItem').onclick=()=>addSubItem();$('saveWorkEdit').onclick=saveWorkEdit;$('confirmComplete').onclick=confirmComplete;$('savePartial').onclick=savePartial;$('workSearch').oninput=()=>renderWorks();$('activityBtn').onclick=openActivity;$('activitySearch').oninput=renderActivities;
