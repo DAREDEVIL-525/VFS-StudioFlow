@@ -224,11 +224,19 @@ function card(w){
     const c=document.createElement('span');c.className='pill';c.textContent='Completed: '+new Date(w.completed_at).toLocaleString('en-IN');m.append(c);
     if(me.role==='admin'){
       const e=document.createElement('button');e.className='edit-btn';e.textContent='EDIT WORK';e.onclick=()=>openEdit(w);el.append(e);
+      // Bharath is Admin + Staff: completion actions are available only for his own work.
+      if(w.assigned_to===me.id && w.completion_type==='partial'){
+        const b=document.createElement('button');b.className='complete-btn';b.textContent='COMPLETE WORK';b.onclick=()=>openComplete(w);el.append(b);
+      }
     }else if(me.role==='staff' && w.completion_type==='partial'){
       const b=document.createElement('button');b.className='complete-btn';b.textContent='COMPLETE WORK';b.onclick=()=>openComplete(w);el.append(b);
     }
   }else{
-    if(me.role==='staff'){
+    if(me.role==='admin' && w.assigned_to===me.id){
+      const e=document.createElement('button');e.className='edit-btn';e.textContent='EDIT WORK';e.onclick=()=>openEdit(w);el.append(e);
+      const p=document.createElement('button');p.className='partial-btn';p.textContent='PARTIALLY COMPLETE';p.onclick=()=>openPartial(w);el.append(p);
+      const b=document.createElement('button');b.className='complete-btn';b.textContent='COMPLETE WORK';b.onclick=()=>openComplete(w);el.append(b);
+    }else if(me.role==='staff'){
       const e=document.createElement('button');e.className='edit-btn';e.textContent='EDIT WORK';e.onclick=()=>openEdit(w);el.append(e);
       const p=document.createElement('button');p.className='partial-btn';p.textContent='PARTIALLY COMPLETE';p.onclick=()=>openPartial(w);el.append(p);
       const b=document.createElement('button');b.className='complete-btn';b.textContent='COMPLETE WORK';b.onclick=()=>openComplete(w);el.append(b);
